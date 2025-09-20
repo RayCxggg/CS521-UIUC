@@ -255,7 +255,7 @@ def evaluate(model, test_loader, device):
             correct += predicted.eq(targets).sum().item()
     
     test_acc = 100. * correct / total
-    print(f"Test Accuracy: {test_acc:.2f}%")
+    print(f"Standard Accuracy: {test_acc:.2f}%")
     return test_acc
 
 # Evaluate the loaded model on clean test data
@@ -396,7 +396,7 @@ def test_model_on_multi_attacks(model, eps_linf=8./255., eps_l2=0.75):
             
     print('Robust accuracy %.5lf' % (tot_acc/tot_test), f'on multi attacks')
 
-# Test the best model on single norm attacks (Linf and L2)
+# Test the best model on single norm attacks (Linf and L2
 print("\nTesting best model on single norm attacks:")
 test_model_on_single_attack(model, attack='pgd_linf', eps=8./255.)
 test_model_on_single_attack(model, attack='pgd_l2', eps=0.75)
@@ -411,12 +411,14 @@ print("\nComparing with pre-trained models:")
 # Model 1 (Linf-trained)
 print("\nTesting Linf-trained model:")
 model.load_state_dict(torch.load('models/pretr_Linf.pth'))
+evaluate(model, test_loader, device)
 test_model_on_single_attack(model, attack='pgd_linf', eps=8./255.)
 test_model_on_single_attack(model, attack='pgd_l2', eps=0.75)
 test_model_on_multi_attacks(model, eps_linf=8./255., eps_l2=0.75)
 
 # Model 2 (L2-trained)
 print("\nTesting L2-trained model:")
+evaluate(model, test_loader, device)
 model.load_state_dict(torch.load('models/pretr_L2.pth'))
 test_model_on_single_attack(model, attack='pgd_linf', eps=8./255.)
 test_model_on_single_attack(model, attack='pgd_l2', eps=0.75)
@@ -424,6 +426,7 @@ test_model_on_multi_attacks(model, eps_linf=8./255., eps_l2=0.75)
 
 # Model 3 (RAMP-trained for multi-norm)
 print("\nTesting RAMP-trained model:")
+evaluate(model, test_loader, device)
 model.load_state_dict(torch.load('models/pretr_RAMP.pth'))
 test_model_on_single_attack(model, attack='pgd_linf', eps=8./255.)
 test_model_on_single_attack(model, attack='pgd_l2', eps=0.75)
