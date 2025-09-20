@@ -1,0 +1,9 @@
+# Ignore everything by default
+*
+
+# But track Python files
+!*.py
+!*/
+
+# Also track .gitignore itself
+!.gitignore
