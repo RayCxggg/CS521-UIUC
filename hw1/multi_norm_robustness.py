@@ -31,14 +31,14 @@ torch.manual_seed(42)
 
 
 ## Dataloaders
-train_dataset = datasets.CIFAR10('cifar10_data/', train=True, download=True, transform=transforms.Compose(
-    [transforms.ToTensor()]
-))
+# train_dataset = datasets.CIFAR10('cifar10_data/', train=True, download=True, transform=transforms.Compose(
+#     [transforms.ToTensor()]
+# ))
 test_dataset = datasets.CIFAR10('cifar10_data/', train=False, download=True, transform=transforms.Compose(
     [transforms.ToTensor()]
 ))
 
-train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+# train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
 
@@ -221,21 +221,21 @@ def train(model, train_loader, optimizer, criterion, device):
     train_acc = 100. * correct / total
     return train_loss, train_acc
 
-# Train the model
-best_acc = 0
-for epoch in range(epochs):
-    train_loss, train_acc = train(model, train_loader, optimizer, criterion, device)
+# # Train the model
+# best_acc = 0
+# for epoch in range(epochs):
+#     train_loss, train_acc = train(model, train_loader, optimizer, criterion, device)
     
-    print(f"Epoch {epoch+1}/{epochs}")
-    print(f"Train Loss: {train_loss:.4f}, Train Acc: {train_acc:.2f}%")
+#     print(f"Epoch {epoch+1}/{epochs}")
+#     print(f"Train Loss: {train_loss:.4f}, Train Acc: {train_acc:.2f}%")
     
-    # Save the best model
-    if train_acc > best_acc:
-        best_acc = train_acc
-        torch.save(model.state_dict(), 'models/best_model.pth')
-        print(f"Model saved with accuracy: {best_acc:.2f}%")
+#     # Save the best model
+#     if train_acc > best_acc:
+#         best_acc = train_acc
+#         torch.save(model.state_dict(), 'models/best_model.pth')
+#         print(f"Model saved with accuracy: {best_acc:.2f}%")
 
-print(f"Training complete! Best accuracy: {best_acc:.2f}%")
+# print(f"Training complete! Best accuracy: {best_acc:.2f}%")
 
 # Load the best model for evaluation
 model.load_state_dict(torch.load('models/best_model.pth'))
@@ -375,12 +375,6 @@ def test_model_on_multi_attacks(model, eps_linf=8./255., eps_l2=0.75):
         tot_test += y_batch.size(0)
             
     print('Robust accuracy %.5lf' % (tot_acc/tot_test), f'on multi attacks')
-
-# First, let's test the clean accuracy of the best model from our training
-print("\nTesting our best trained model:")
-model.load_state_dict(torch.load('models/best_model.pth'))
-val_loss, val_acc = validate(model, test_loader, criterion, device)
-print(f"Clean Test Accuracy: {val_acc:.2f}%")
 
 # Test the best model on single norm attacks (Linf and L2)
 print("\nTesting best model on single norm attacks:")
