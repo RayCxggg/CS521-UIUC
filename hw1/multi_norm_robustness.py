@@ -240,7 +240,27 @@ def train(model, train_loader, optimizer, criterion, device):
 # Load the best model for evaluation
 model.load_state_dict(torch.load('models/best_model.pth'))
 
+# Evaluate the model on the test dataset
+def evaluate(model, test_loader, device):
+    model.eval()
+    correct = 0
+    total = 0
+    
+    with torch.no_grad():
+        for inputs, targets in tqdm(test_loader, desc="Testing"):
+            inputs, targets = inputs.to(device), targets.to(device)
+            outputs = model(inputs)
+            _, predicted = outputs.max(1)
+            total += targets.size(0)
+            correct += predicted.eq(targets).sum().item()
+    
+    test_acc = 100. * correct / total
+    print(f"Test Accuracy: {test_acc:.2f}%")
+    return test_acc
 
+# Evaluate the loaded model on clean test data
+print("Evaluating model on clean test data:")
+evaluate(model, test_loader, device)
 
 # # Implement the Attacks
 # 
