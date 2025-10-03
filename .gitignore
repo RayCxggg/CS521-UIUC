@@ -3,6 +3,7 @@
 
 # But track Python files
 !*.py
+!*.ipynb
 !*/
 
 # Also track .gitignore itself
